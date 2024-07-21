@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvService } from './env/env.service';
 import { DataSource } from 'typeorm';
 import { z_env } from './env/env.z';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { z_env } from './env/env.z';
     TypeOrmModule.forRoot(
       new EnvService(new ConfigService()).getTypeOrmConfig(),
     ),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

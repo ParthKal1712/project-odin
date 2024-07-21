@@ -1,5 +1,8 @@
 # Project Odin
 
+I will be updating the documentation abd my Database Structure as I develop it. Keep an eye out on the DB Structure here:
+https://dbdiagram.io/d/Project-Odin-669d781c8b4bb5230eef49d5
+
 ## Steps
 
 1. Install a new Nest JS Project using the following command:
@@ -38,13 +41,31 @@ services:
 pnpm run start:dev
 ```
 
-4. Install the Nest JS Config Module to access the Env file using Nest:
+4. Create a .env file in the root of the project:
+
+```bash
+NODE_ENV=dev
+
+DEV_POSTGRES_USER=parthkal
+DEV_POSTGRES_PASSWORD=yolo1712
+DEV_POSTGRES_DB=odin_db
+DEV_POSTGRES_HOST=localhost
+DEV_POSTGRES_PORT=5432
+
+PROD_POSTGRES_USER=""
+PROD_POSTGRES_PASSWORD=""
+PROD_POSTGRES_DB=""
+PROD_POSTGRES_HOST=""
+PROD_POSTGRES_PORT=1
+```
+
+5. Install the Nest JS Config Module to access the Env file using Nest:
 
 ```bash
 pnpm i @nestjs/config
 ```
 
-5. Configure the ConfigModule in the main App Module like this:
+6. Configure the ConfigModule in the main App Module like this:
 
 ```node
 ...
@@ -56,25 +77,25 @@ pnpm i @nestjs/config
 ...
 ```
 
-6. In order to make the Environment Variables Type-safe and validate them at the start, we will create an Env Module using:
+7. In order to make the Environment Variables Type-safe and validate them at the start, we will create an Env Module using:
 
 ```bash
 nest g module env
 ```
 
-7. We will create a service for this module to handle our Environment Variables using:
+8. We will create a service for this module to handle our Environment Variables using:
 
 ```bash
 nest g service env --no-spec
 ```
 
-8. Install Zod using:
+9. Install Zod using:
 
 ```bash
 pnpm i zod
 ```
 
-9. Inside the env module, create a new file called "env.z.ts" that contains the Zod Schema for our Env vars:
+10. Inside the env module, create a new file called "env.z.ts" that contains the Zod Schema for our Env vars:
 
 ```node
 import { z } from 'zod';
@@ -123,7 +144,7 @@ export const z_env = z
 export type Env = z.infer<typeof z_env>;
 ```
 
-10. Now that we have defined the Zod Schema for our Env File, let us validate our ConfigModulle by:
+11. Now that we have defined the Zod Schema for our Env File, let us validate our ConfigModulle by:
 
 ```node
 ...
@@ -134,7 +155,7 @@ ConfigModule.forRoot({
 ...
 ```
 
-11. In "env.service.ts", we need to import ConfigModule to be able to access our Env Variables. Therefore, we will create a constructor for EnvService class so that these resources are loaded automatically when objects of this class are made.
+12. In "env.service.ts", we need to import ConfigModule to be able to access our Env Variables. Therefore, we will create a constructor for EnvService class so that these resources are loaded automatically when objects of this class are made.
 
 ```node
 export class EnvService {
@@ -143,7 +164,7 @@ export class EnvService {
 }
 ```
 
-12. The EnvService will have 2 functions: get() and getTypeOrmConfig().
+13. The EnvService will have 2 functions: get() and getTypeOrmConfig().
 
 - get() function will return our Environment variables in a Type-Safe way:
 
@@ -176,13 +197,13 @@ getTypeOrmConfig(): TypeOrmModuleOptions {
 ...
 ```
 
-13. We will use TypeORM to access and query our Database. Install TypeORM using:
+14. We will use TypeORM to access and query our Database. Install TypeORM using:
 
 ```bash
 pnpm i -- save @nestjs/typeorm typeorm pg
 ```
 
-14. Now, we will initialize TypeORM in the Nest App by calling the TypeOrmModule.forRoot() under "imports". After this, "app.module.ts" looks like:
+15. Now, we will initialize TypeORM in the Nest App by calling the TypeOrmModule.forRoot() under "imports". After this, "app.module.ts" looks like:
 
 ```node
 import { Module } from '@nestjs/common';
@@ -216,3 +237,22 @@ export class AppModule {
   ) {}
 }
 ```
+
+16. Now, we will create a new Module that represents a Table in the database (ie. a resource). To create a new User Resource Module:
+
+```bash
+nest g resource user
+
+? What transport layer do you use? (Use arrow keys)
+❯ REST API
+  GraphQL (code first)
+  GraphQL (schema first)
+  Microservice (non-HTTP)
+  WebSockets
+
+? Would you like to generate CRUD entry points? (y/N) y
+```
+
+- This will create a new User Module with the neccessary CRUD points, DTOs and Entity (Table) Schemas
+
+17.
