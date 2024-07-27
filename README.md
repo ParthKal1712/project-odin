@@ -255,4 +255,98 @@ nest g resource user
 
 - This will create a new User Module with the neccessary CRUD points, DTOs and Entity (Table) Schemas
 
-17.
+17. Now, in order to create schema for our User Table, we fill up the "user.entity.ts" file.
+
+```node
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+@Entity('master_users')
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: false })
+  name: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
+  email: string;
+
+  @Column({ type: 'varchar', length: 15, nullable: true, array: true })
+  phoneNo: string[];
+
+  @Column({ type: 'varchar', length: 255, nullable: true, unique: true })
+  imageUrl: string;
+
+  @Column({ type: 'varchar', length: 16, nullable: true, unique: true })
+  aadhaarNo: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+}
+```
+
+- Using "@Entity('master_user')" decorator to define the table class (with Table name as argument).
+- Using "@PrimaryGeneratedColumn('uuid')" decorator to define an auto-generating UUID Primary Key.
+- Using "@Column('<col_name>')" decorator to define the column properties. (For our case, we don't set different column names explicitly).
+- Using "@CreateDateColumn()" decorator to define an auto-generating datetime column for createdDateTime.
+
+18. In the same entity file, we will define the Data Validations for Primary Columns in that table.
+
+```node
+// Zod Validations for Primary Columns
+
+export const z_users_id = z.string().uuid();
+
+export const z_users_name = z.string().min(1).max(255);
+
+export const z_users_username = z.string().min(1).max(255);
+
+export const z_users_password = z.string().min(1).max(255);
+
+export const z_users_createdAt = z.date();
+```
+
+19. Define the CreateUserDto DTO for the User Module.
+
+```node
+import { z } from 'zod';
+import {
+  z_users_name,
+  z_users_password,
+  z_users_username,
+} from '../entities/user.entity';
+import { createZodDto } from '@anatine/zod-nestjs';
+
+export const z_CreateUserDto = z.object({
+  name: z_users_name,
+  username: z_users_username,
+  password: z_users_password,
+});
+
+export class CreateUserDto extends createZodDto(z_CreateUserDto) {}
+```
+
+20. Add the Type ORM Module Import in the User Module for Nest to be able to access the "master_users" Table.
+
+```node
+// In "user.module.ts":
+
+@Module({
+  imports: [TypeOrmModule.forFeature([User])],
+  ...
+})
+```
+
+21. Import the User Table (as defined in "user.entity.ts") in the User Service inside the class constructor:
+
+```node
+// In "user.service.ts":
+constructor(
+    @InjectRepository(User) private userRepository: Repository<User>
+  ) {}
+```
