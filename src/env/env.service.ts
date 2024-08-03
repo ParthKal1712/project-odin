@@ -20,6 +20,7 @@ export class EnvService {
       POSTGRES_DB: this.get('POSTGRES_DB'),
       POSTGRES_HOST: this.get('POSTGRES_HOST'),
       POSTGRES_PORT: this.get('POSTGRES_PORT'),
+      JWT_SECRET: this.get('JWT_SECRET'),
     };
   }
 

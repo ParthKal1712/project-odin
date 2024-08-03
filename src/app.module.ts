@@ -8,18 +8,20 @@ import { EnvService } from './env/env.service';
 import { DataSource } from 'typeorm';
 import { z_env } from './env/env.z';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      validate: (env) => z_env.parse(env),
       isGlobal: true,
+      validate: (env) => z_env.parse(env),
     }),
     EnvModule,
     TypeOrmModule.forRoot(
-      new EnvService(new ConfigService()).getTypeOrmConfig(),
+      new EnvService(new ConfigService()).getTypeOrmConfig()
     ),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -27,6 +29,6 @@ import { UserModule } from './user/user.module';
 export class AppModule {
   constructor(
     private envService: EnvService,
-    private dataSource: DataSource,
+    private dataSource: DataSource
   ) {}
 }

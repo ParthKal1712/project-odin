@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   db:
     image: postgres
@@ -6,7 +6,7 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     ports:
-      - 5432:5432  # make sure you don't have another container running on 5432
+      - 5432:5432 # make sure you don't have another container running on 5432
     environment:
       - POSTGRES_DB=odin_db
       - POSTGRES_USER=parthkal

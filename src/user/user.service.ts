@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { User, z_users_username } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { z } from 'zod';
 
 @Injectable()
 export class UserService {
@@ -11,8 +12,17 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
+    const user = new User();
+    user.name = createUserDto.name;
+    user.username = createUserDto.username;
+    user.password = createUserDto.password;
+    return await this.userRepository.save(user);
     return 'This action adds a new user';
+  }
+
+  async findUserByUsername(inputUsername: z.infer<typeof z_users_username>) {
+    return this.userRepository.findOne({ where: { username: inputUsername } });
   }
 
   findAll() {
