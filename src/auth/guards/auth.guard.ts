@@ -15,17 +15,12 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const authToken_withBearer = request.headers.authorization;
     const authToken = authToken_withBearer?.split(' ')[1];
-    console.log('Received Access Token', authToken);
 
     if (!authToken) {
       throw new UnauthorizedException();
     }
 
     try {
-      console.log(
-        'Sign Secret during unsign',
-        new ConfigService().get('JWT_SECRET')
-      );
       const authTokenPayload = await this.jwtService.verifyAsync(authToken);
       request.user = {
         id: authTokenPayload.sub,
@@ -33,7 +28,7 @@ export class AuthGuard implements CanActivate {
       };
       return true;
     } catch (error) {
-      console.log('ERROR', error);
+      console.log(error);
       throw new UnauthorizedException();
     }
   }

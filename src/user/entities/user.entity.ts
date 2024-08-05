@@ -20,6 +20,9 @@ export class User {
   @Column({ type: 'varchar', length: 255, nullable: false })
   password: string;
 
+  @Column({ type: 'varchar', length: 255, nullable: false, default: 'light' })
+  theme: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }
@@ -33,5 +36,7 @@ export const z_users_name = z.string().min(1).max(255);
 export const z_users_username = z.string().min(1).max(255);
 
 export const z_users_password = z.string().min(1).max(255);
+
+export const z_users_theme = z.string().min(1).max(255);
 
 export const z_users_createdAt = z.date();

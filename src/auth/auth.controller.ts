@@ -8,12 +8,15 @@ import {
   Post,
   UseGuards,
   Request,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { type_auth_authenticateOutput } from './auth.z';
 import { AuthService } from './auth.service';
 import { LoginInputDto, z_loginOutputDto } from './dto/login.dto';
 import { AuthGuard } from './guards/auth.guard';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -26,7 +29,7 @@ export class AuthController {
       const result = await this.authService.authenticate(body);
       return result;
     } catch (error) {
-      throw new NotImplementedException(error);
+      throw new UnauthorizedException(error);
     }
   }
 

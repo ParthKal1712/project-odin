@@ -39,6 +39,7 @@ export class AuthService {
           id: user.id,
           username: user.username,
           name: user.name,
+          theme: user.theme,
         };
       } else {
         throw new UnauthorizedException();
@@ -52,9 +53,7 @@ export class AuthService {
     user: type_auth_validateUserOutput
   ): Promise<type_auth_authenticateOutput | null> {
     const payload = { username: user.username, sub: user.id };
-    console.log('Sign Secret', new ConfigService().get('JWT_SECRET'));
     const accessToken = await this.jwtService.signAsync(payload);
-    console.log('Generated Access Token', accessToken);
     return {
       ...user,
       accessToken,

@@ -3,6 +3,7 @@ import {
   z_users_id,
   z_users_name,
   z_users_password,
+  z_users_theme,
   z_users_username,
 } from 'src/user/entities/user.entity';
 
@@ -15,6 +16,7 @@ const z_auth_validateUserOutput = z.object({
   id: z_users_id,
   username: z_users_username,
   name: z_users_name,
+  theme: z_users_theme,
 });
 
 const z_auth_authenticateInput = z_auth_validateUserInput;
