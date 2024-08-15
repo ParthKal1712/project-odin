@@ -9,6 +9,7 @@ import { DataSource } from 'typeorm';
 import { z_env } from './env/env.z';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     ),
     UserModule,
     AuthModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

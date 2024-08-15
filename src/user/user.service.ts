@@ -19,7 +19,6 @@ export class UserService {
     user.username = createUserDto.username;
     user.password = createUserDto.password;
     return await this.userRepository.save(user);
-    return 'This action adds a new user';
   }
 
   async setUserTheme(setUserThemeInputDto: SetUserThemeInputDto, user) {

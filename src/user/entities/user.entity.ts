@@ -1,3 +1,4 @@
+import { z_contacts_name } from 'src/contact/entities/contact.entity';
 import {
   Column,
   CreateDateColumn,
@@ -31,7 +32,7 @@ export class User {
 
 export const z_users_id = z.string().uuid();
 
-export const z_users_name = z.string().min(1).max(255);
+export const z_users_name = z_contacts_name;
 
 export const z_users_username = z.string().min(1).max(255);
 
